@@ -2,6 +2,7 @@ const utils = require('./lib/utils');
 const reshaper = require('arabic-persian-reshaper').ArabicShaper;
 const opentype = require('opentype.js');
 const exec = require('child_process').exec;
+const execSync = require("child_process").execSync;
 const mapLimit = require('map-limit');
 const MaxRectsPacker = require('maxrects-packer').MaxRectsPacker;
 const path = require('path');
@@ -55,19 +56,40 @@ function generateBMFont (fontPath, opt, callback) {
 
   const lookupKey = process.arch === "arm64" ?`${process.platform}_${process.arch}` : process.platform;
 
-  const binName = binaryLookup[lookupKey];
+  let binaryPath = execSync("which msdfgen", { encoding: "utf8" }).trim();
 
-  assert.ok(binName, `No msdfgen binary for platform ${lookupKey}.`);
-  assert.ok(fontPath, 'must specify a font path');
-  assert.ok(typeof fontPath === 'string' || fontPath instanceof Buffer, 'font must be string path or Buffer');
-  assert.ok(opt.filename || !(fontPath instanceof Buffer), 'must specify filename if font is a Buffer');
-  assert.ok(callback, 'missing callback')
-  assert.ok(typeof callback === 'function', 'expected callback to be a function');
-  assert.ok(!opt.textureSize || opt.textureSize.length === 2, 'textureSize format shall be: width,height');
+  if (!binaryPath) {
+    const binName = binaryLookup[lookupKey];
+
+    assert.ok(binName, `No msdfgen binary for platform ${lookupKey}.`);
+     binaryPath = path.join(__dirname, "bin", process.platform, binName);
+  }
+
+  const msdfGenVersion = execSync(`${binaryPath} -version`, { encoding: "utf8" }).trim();
+
+  console.log(msdfGenVersion);
+
+  assert.ok(fontPath, "must specify a font path");
+  assert.ok(
+    typeof fontPath === "string" || fontPath instanceof Buffer,
+    "font must be string path or Buffer"
+  );
+  assert.ok(
+    opt.filename || !(fontPath instanceof Buffer),
+    "must specify filename if font is a Buffer"
+  );
+  assert.ok(callback, "missing callback");
+  assert.ok(
+    typeof callback === "function",
+    "expected callback to be a function"
+  );
+  assert.ok(
+    !opt.textureSize || opt.textureSize.length === 2,
+    "textureSize format shall be: width,height"
+  );
 
   // Set fallback output path to font path
-  let fontDir = typeof fontPath === 'string' ? path.dirname(fontPath) : '';
-  const binaryPath = path.join(__dirname, 'bin', process.platform, binName);
+  let fontDir = typeof fontPath === "string" ? path.dirname(fontPath) : "";
 
   // const reuse = (typeof opt.reuse === 'boolean' || typeof opt.reuse === 'undefined') ? {} : opt.reuse.opt;
   let reuse, cfg = {};
