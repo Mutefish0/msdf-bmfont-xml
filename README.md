@@ -4,6 +4,8 @@
 [![npm version](https://badge.fury.io/js/msdf-bmfont-xml.svg)](https://badge.fury.io/js/msdf-bmfont-xml)
 ![npm](https://img.shields.io/npm/dm/msdf-bmfont-xml.svg)
 
+Forked from [soimy/msdf-bmfont-xml](https://github.com/soimy/msdf-bmfont-xml). This modified version prioritizes using the `msdfgen` in your PATH over the prebuilt binary included in the project.
+
 Converts a `.ttf` font file into multichannel signed distance fields, then outputs packed spritesheets and an `xml(.fnt}` / `txt(.fnt)` or `json` representation of an AngelCode BMFont file.
 
 Signed distance fields are a method of reproducing vector shapes from a texture representation, popularized in [this paper by Valve](http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf).
@@ -19,7 +21,7 @@ npm install & npm run render
 ## Install as CLI
 
 ```bash
-npm install msdf-bmfont-xml -g
+npm install @mutefish0/msdf-bmfont-xml -g
 ```
 
 Then you just need to call `msdf-bmfont` from console to generate font file.
