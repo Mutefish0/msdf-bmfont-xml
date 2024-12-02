@@ -1,6 +1,6 @@
 {
-  "name": "msdf-bmfont-xml",
-  "version": "2.7.0",
+  "name": "@mutefish0/msdf-bmfont-xml",
+  "version": "2.7.1",
   "description": "Creates a BMFont compatible bitmap font of Signed-Distance Fields from a font file",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/soimy/msdf-bmfont-xml.git"
+    "url": "git@github.com:Mutefish0/msdf-bmfont-xml.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "homepage": "https://github.com/soimy/msdf-bmfont-xml",
   "bugs": {
